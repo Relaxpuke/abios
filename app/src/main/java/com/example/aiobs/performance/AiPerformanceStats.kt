@@ -1,0 +1,30 @@
+package com.example.aiobs.performance
+
+data class AiPerformanceSnapshot(
+    val profileName: String,
+    val socModel: String,
+    val delegate: String,
+    val targetFps: Int,
+    val processedFps: Float,
+    val captureFps: Float,
+    val inferenceMs: Float,
+    val endToEndMs: Float,
+    val droppedFrames: Long,
+    val rawDetectionCount: Int,
+    val acceptedDetectionCount: Int,
+    val pipeline: PipelineProfiler.Snapshot,
+    val yoloTotalMs: Float = 0f,
+    val yoloInferMs: Float = 0f,
+    val ostrackMs: Float = 0f,
+    val dinov2Ms: Float = 0f,
+    val xfeatExtractMs: Float = 0f,
+    val xfeatMatchMs: Float = 0f,
+    val recoveryMs: Float = 0f,
+    val recoveryCandidates: Int = 0,
+    val yoloModel: String = "YOLO11n-Seg",
+    val yoloBackend: String = "UNKNOWN",
+    val ostrackModel: String = "OSTrack-256",
+    val ostrackBackend: String = "QNN-HTP",
+    val xfeatModel: String = "XFeat-480 W8A16",
+    val xfeatBackend: String = "UNKNOWN"
+)
