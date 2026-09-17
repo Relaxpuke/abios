@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <!-- 1. 纯净画面 -->
+    <com.pedro.library.view.OpenGlView
+        android:id="@+id/surfaceView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/uiOverlayContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 2. AI 绘制层 -->
+        <com.example.aiobs.AiOverlayView
+            android:id="@+id/aiOverlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- 3. 顶部 HUD 区域 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/hudTopBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- 左上角 1层: 系统状态胶囊 -->
+            <LinearLayout android:background="@drawable/bg_glass_pill" android:gravity="center_vertical" android:id="@+id/hudStatusPill" android:layout_height="17dp" android:layout_width="wrap_content" android:orientation="horizontal" android:paddingEnd="8dp" android:paddingStart="7dp" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+                <View android:background="@drawable/bg_status_dot" android:id="@+id/hudStatusDot" android:layout_height="8dp" android:layout_marginEnd="8dp" android:layout_width="8dp"/>
+                <TextView android:id="@+id/hudStatusText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="READY" android:textColor="#FFFFFF" android:textSize="9sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- 左上角 2层: 硬件设备状态胶囊 (挂在系统状态下方) -->
+            <LinearLayout android:background="@drawable/bg_glass_pill" android:gravity="center_vertical" android:id="@+id/hudDevicePill" android:layout_height="17dp" android:layout_marginTop="4dp" android:layout_width="wrap_content" android:orientation="horizontal" android:paddingHorizontal="11dp" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/hudStatusPill">
+
+                <TextView android:fontFamily="sans-serif-medium" android:id="@+id/hudNetworkText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="WIFI" android:textColor="#E0E0E0" android:textSize="9sp"/>
+
+                <View android:background="#4DFFFFFF" android:layout_height="9dp" android:layout_marginHorizontal="9dp" android:layout_width="1dp"/>
+
+                <TextView android:fontFamily="sans-serif-medium" android:id="@+id/hudTempText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="--°C" android:textColor="#E0E0E0" android:textSize="9sp"/>
+
+                <View android:background="#4DFFFFFF" android:layout_height="9dp" android:layout_marginHorizontal="6dp" android:layout_width="1dp"/>
+
+                <TextView android:fontFamily="sans-serif-medium" android:id="@+id/hudBatteryText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="--%" android:textColor="#E0E0E0" android:textSize="9sp"/>
+            </LinearLayout>
+
+            <!-- 右上角 1层: 推流状态主胶囊 -->
+            <LinearLayout android:background="@drawable/bg_glass_pill" android:gravity="center_vertical" android:id="@+id/hudStreamPill" android:layout_height="17dp" android:layout_width="wrap_content" android:orientation="horizontal" android:paddingEnd="8dp" android:paddingStart="7dp" android:visibility="gone" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent">
+                <View android:background="@drawable/bg_status_dot" android:id="@+id/hudStreamDot" android:layout_height="8dp" android:layout_marginEnd="8dp" android:layout_width="8dp" app:backgroundTint="#FF3B30"/>
+                <TextView android:id="@+id/hudStreamText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="LIVE 0 Kbps" android:textColor="#FF3B30" android:textSize="9sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- 右上角 2层: 新增的推流详情胶囊 (挂在推流主状态下方) -->
+            <LinearLayout android:background="@drawable/bg_glass_pill" android:gravity="center_vertical" android:id="@+id/hudStreamInfoPill" android:layout_height="17dp" android:layout_marginTop="4dp" android:layout_width="wrap_content" android:orientation="horizontal" android:paddingHorizontal="11dp" android:visibility="gone" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/hudStreamPill">
+
+                <TextView android:fontFamily="monospace" android:id="@+id/hudStreamInfoText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="1080P | DROP 0" android:textColor="#A0AAB5" android:textSize="9sp"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 4. 底部 HUD 区域 (左中右紧凑横排) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/hudBottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="11dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- 左侧: AI 流水线耗时指示器 -->
+            <LinearLayout android:background="@drawable/bg_glass_pill" android:gravity="center_vertical" android:id="@+id/hudPipelinePill" android:layout_height="34dp" android:layout_width="wrap_content" android:orientation="horizontal" android:paddingHorizontal="10dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout android:gravity="center" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:layout_width="wrap_content" android:orientation="vertical">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="YOLO" android:textColor="#999999" android:textSize="8sp" android:textStyle="bold"/>
+                    <TextView android:fontFamily="monospace" android:id="@+id/hudYoloTime" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="—" android:textColor="#FFFFFF" android:textSize="11sp"/>
+                </LinearLayout>
+
+                <View android:background="#33FFFFFF" android:layout_height="14dp" android:layout_marginEnd="6dp" android:layout_width="1dp"/>
+
+                <LinearLayout android:gravity="center" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:layout_width="wrap_content" android:orientation="vertical">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="OSTrack" android:textColor="#999999" android:textSize="8sp" android:textStyle="bold"/>
+                    <TextView android:fontFamily="monospace" android:id="@+id/hudOsTrackTime" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="—" android:textColor="#FFFFFF" android:textSize="11sp"/>
+                </LinearLayout>
+
+                <View android:background="#33FFFFFF" android:layout_height="14dp" android:layout_marginEnd="6dp" android:layout_width="1dp"/>
+                <!-- 🌟 新增：DINOv2 -->
+                <LinearLayout android:gravity="center" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:layout_width="wrap_content" android:orientation="vertical">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="DINOv2" android:textColor="#999999" android:textSize="8sp" android:textStyle="bold"/>
+                    <TextView android:fontFamily="monospace" android:id="@+id/hudDinov2Time" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="—" android:textColor="#FFFFFF" android:textSize="11sp"/>
+                </LinearLayout>
+
+                <View android:background="#33FFFFFF" android:layout_height="14dp" android:layout_marginEnd="6dp" android:layout_width="1dp"/>
+
+                <LinearLayout android:gravity="center" android:layout_height="wrap_content" android:layout_width="wrap_content" android:orientation="vertical">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="XFeat" android:textColor="#999999" android:textSize="8sp" android:textStyle="bold"/>
+                    <TextView android:fontFamily="monospace" android:id="@+id/hudXFeatTime" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="—" android:textColor="#FFFFFF" android:textSize="11sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 中间: FPS 胶囊 (自适应居中排列) -->
+            <LinearLayout android:background="@drawable/bg_glass_pill" android:gravity="center" android:id="@+id/hudFpsPill" android:layout_height="34dp" android:layout_width="wrap_content" android:orientation="horizontal" android:paddingHorizontal="9dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@id/btnOpenDashboard" app:layout_constraintStart_toEndOf="@id/hudPipelinePill">
+
+                <TextView android:fontFamily="monospace" android:id="@+id/hudFpsText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="CAM -- | AI --" android:textColor="#E0E0E0" android:textSize="9sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- 右侧: 设置齿轮 -->
+            <TextView android:background="@drawable/bg_glass_pill" android:gravity="center" android:id="@+id/btnOpenDashboard" android:layout_height="34dp" android:layout_width="34dp" android:text="⚙" android:textColor="#FFFFFF" android:textSize="18sp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 5. 全新的 Dashboard 控制台 -->
+        <LinearLayout android:background="@drawable/bg_menu_panel" android:elevation="24dp" android:id="@+id/dashboardContainer" android:layout_height="0dp" android:layout_width="match_parent" android:orientation="vertical" android:visibility="gone" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHeight_percent="0.55">
+
+            <!-- 顶部 Tab 导航栏 -->
+            <LinearLayout android:layout_height="wrap_content" android:layout_marginBottom="8dp" android:layout_width="match_parent" android:orientation="horizontal">
+
+                <TextView android:id="@+id/tabCamera" android:text="Camera" style="@style/DashboardTab"/>
+                <TextView android:id="@+id/tabAi" android:text="AI Models" style="@style/DashboardTab"/>
+                <TextView android:id="@+id/tabRuntime" android:text="Runtime" style="@style/DashboardTab"/>
+                <TextView android:id="@+id/tabReport" android:text="Report" style="@style/DashboardTab"/>
+                <TextView android:background="?android:attr/selectableItemBackground" android:gravity="center" android:id="@+id/btnCloseDashboard" android:layout_height="40dp" android:layout_width="48dp" android:text="✕" android:textColor="#FFFFFF" android:textSize="20sp"/>
+            </LinearLayout>
+
+            <!-- 极简分割线 -->
+            <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_marginBottom="12dp" android:layout_width="match_parent"/>
+
+            <!-- 四大内容页容器 -->
+            <FrameLayout android:layout_height="match_parent" android:layout_width="match_parent">
+
+                <!-- ================= Page 1: Camera ================= -->
+                <ScrollView android:id="@+id/pageCamera" android:layout_height="match_parent" android:layout_width="match_parent" android:visibility="visible">
+                    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:paddingBottom="24dp" android:paddingTop="8dp">
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">
+                                <LinearLayout android:id="@+id/tvToggleLens" style="@style/SettingRow">
+                                    <TextView android:text="Lens" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+                                <LinearLayout android:id="@+id/tvToggleRes" style="@style/SettingRow">
+                                    <TextView android:text="Resolution" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+                                <LinearLayout android:id="@+id/tvPerfFps" style="@style/SettingRow">
+                                    <TextView android:text="Frame Rate" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">
+                                <LinearLayout android:id="@+id/tvToggleZoom" style="@style/SettingRow">
+                                    <TextView android:text="Zoom Control" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+                                <LinearLayout android:id="@+id/tvToggleOri" style="@style/SettingRow">
+                                    <TextView android:text="Orientation" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- All Settings 弹窗入口 -->
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:id="@+id/tvToggleCamera" style="@style/SettingRow">
+                                <TextView android:text="⚙ Advanced Camera Settings" android:textColor="#7EC8FF" style="@style/SettingLabel"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </ScrollView>
+
+                <!-- ================= Page 2: AI Models ================= -->
+                <ScrollView android:id="@+id/pageAi" android:layout_height="match_parent" android:layout_width="match_parent" android:visibility="gone">
+                    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:paddingBottom="24dp" android:paddingTop="8dp">
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">
+
+                                <LinearLayout android:id="@+id/tvAiModelYolo" style="@style/SettingRow">
+                                    <TextView android:text="YOLO-Seg Model" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+
+                                <LinearLayout android:id="@+id/tvAiModelOstrack" style="@style/SettingRow">
+                                    <TextView android:text="OSTrack Model" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+
+                                <LinearLayout android:id="@+id/tvAiModelXFeat" style="@style/SettingRow">
+                                    <TextView android:text="XFeat Model" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+                                <!-- 🌟 新增：XFeat 总开关 -->
+                                <LinearLayout android:id="@+id/tvToggleXFeatEnabled" style="@style/SettingRow">
+                                    <TextView android:text="XFeat 微观校验 (关闭即纯DINOv2)" style="@style/SettingLabel" android:textColor="#FFB84D"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+
+                                <!-- 🌟 新增 DINOv2 选项 🌟 -->
+                                <LinearLayout android:id="@+id/tvAiModelDinov2" style="@style/SettingRow">
+                                    <TextView android:text="DINOv2 Model" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:id="@+id/tvAiTuning" style="@style/SettingRow">
+                                <TextView android:text="⚙ AI Parameters &amp; Tuning" android:textColor="#7EC8FF" style="@style/SettingLabel"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:id="@+id/tvAiValidation" style="@style/SettingRow">
+                                <TextView android:text="🔬 Run Model Validation" android:textColor="#FF6B6B" style="@style/SettingLabel"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </ScrollView>
+
+                <!-- ================= Page 3: Runtime ================= -->
+                <ScrollView android:id="@+id/pageRuntime" android:layout_height="match_parent" android:layout_width="match_parent" android:visibility="gone">
+                    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:paddingBottom="24dp" android:paddingTop="8dp">
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:id="@+id/tvToggleFace" style="@style/SettingRow">
+                                <TextView android:text="⚡ Compute Mode" android:textColor="#FFB84D" style="@style/SettingLabel"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">
+                                <LinearLayout android:id="@+id/tvRuntimeYoloBackend" style="@style/SettingRow">
+                                    <TextView android:text="YOLO Backend" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">
+                                <LinearLayout android:id="@+id/tvDebugFreeze" style="@style/SettingRow">
+                                    <TextView android:text="Freeze AI" style="@style/SettingLabel"/>
+                                </LinearLayout>
+                                <View android:background="#1AFFFFFF" android:layout_height="1dp" android:layout_width="match_parent"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:id="@+id/tvModelValidation" style="@style/SettingRow">
+                                <TextView android:text="🔬 Run Model Validation" android:textColor="#FF6B6B" style="@style/SettingLabel"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </ScrollView>
+
+                <!-- ================= Page 4: Report ================= -->
+                <ScrollView android:id="@+id/pageReport" android:layout_height="match_parent" android:layout_width="match_parent" android:visibility="gone">
+                    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:paddingBottom="24dp" android:paddingTop="8dp">
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:id="@+id/tvRuntimeReport" style="@style/SettingRow">
+                                <TextView android:text="📊 Toggle Telemetry Overlay" style="@style/SettingLabel"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/SettingCard">
+                            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:padding="16dp">
+                                <TextView android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:layout_width="wrap_content" android:text="Stream Configuration" android:textColor="#7EC8FF" android:textSize="14sp" android:textStyle="bold"/>
+
+                                <LinearLayout android:background="@drawable/bg_input_panel" android:gravity="center_vertical" android:id="@+id/llSrtInput" android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="horizontal" android:paddingHorizontal="10dp" android:paddingVertical="4dp">
+                                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="srt://" android:textColor="#777777" android:textSize="12sp"/>
+                                    <EditText android:background="@null" android:hint="IP" android:id="@+id/etHost" android:inputType="textUri" android:layout_height="40dp" android:layout_weight="2.8" android:layout_width="0dp" android:singleLine="true" android:textColor="#FFFFFF" android:textColorHint="#666666" android:textSize="13sp"/>
+                                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text=":" android:textColor="#666666"/>
+                                    <EditText android:background="@null" android:gravity="center" android:hint="8890" android:id="@+id/etPort" android:inputType="number" android:layout_height="40dp" android:layout_weight="1" android:layout_width="0dp" android:singleLine="true" android:textColor="#FFFFFF" android:textColorHint="#666666" android:textSize="13sp"/>
+                                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="/" android:textColor="#666666"/>
+                                    <EditText android:background="@null" android:hint="live" android:id="@+id/etStreamName" android:inputType="text" android:layout_height="40dp" android:layout_weight="1.4" android:layout_width="0dp" android:singleLine="true" android:textColor="#FFFFFF" android:textColorHint="#666666" android:textSize="13sp"/>
+                                </LinearLayout>
+
+                                <Button android:backgroundTint="#D32F2F" android:id="@+id/btnStream" android:layout_height="48dp" android:layout_marginTop="16dp" android:layout_width="match_parent" android:text="START STREAMING" android:textColor="#FFFFFF" android:textStyle="bold"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+                </ScrollView>
+            </FrameLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

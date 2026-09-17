@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ControlItem">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:background">@drawable/bg_glass_pill</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textColor">#F5F5F5</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ControlItemSecondary" parent="ControlItem">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#8FCBFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="PerfRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">22dp</item>
+        <item name="android:textColor">#BEBEBE</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <!-- Dashboard 顶部选项卡样式 -->
+    <style name="DashboardTab">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#888888</item> <!-- 默认暗灰色 -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+    <!-- 控制台卡片主体 -->
+    <style name="SettingCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="cardBackgroundColor">#121820</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="strokeColor">#26FFFFFF</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- 卡片内的一行操作区 -->
+    <style name="SettingRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <!-- 左侧标题 (灰色) -->
+    <style name="SettingLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">#A0AAB5</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 右侧状态数值 (纯白高亮) -->
+    <style name="SettingValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>
